@@ -13,3 +13,4 @@ module EventManagerService
     # -- all .rb files in that directory are automatically loaded.
   end
 end
+Mongoid.load!(File.dirname(__FILE__) + "/mongoid.yml")
