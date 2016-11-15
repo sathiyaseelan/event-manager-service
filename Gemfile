@@ -23,7 +23,7 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
-gem 'sqlite3'
+
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 3.0'
 gem 'redis-namespace'
@@ -36,6 +36,7 @@ gem 'bcrypt', '~> 3.1.7'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'sqlite3'
   gem 'byebug', platform: :mri
   gem 'pry-rails'
 end
@@ -50,6 +51,7 @@ group :development do
 end
 
 group :production do
+  gem 'pg'
   gem 'rails_12factor'
 end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
