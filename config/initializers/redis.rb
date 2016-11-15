@@ -1,1 +1,1 @@
-$redis = Redis::Namespace.new("event_manager", :redis => Redis.new(:host => 'localhost', :port => 6379))
+$redis = Redis::Namespace.new("event_manager", :redis => Redis.new(:url =>ENV['REDIS_URL']))

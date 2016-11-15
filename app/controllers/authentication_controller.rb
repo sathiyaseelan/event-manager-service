@@ -1,7 +1,7 @@
 class AuthenticationController < ApplicationController
-  skip_before_action :authenticate_request!, only: [:authenticate_user]
+  skip_before_action :authenticate_request!, only: [:authenticate]
 
-  def authenticate_user
+  def authenticate
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
       render json: payload(user)
@@ -12,6 +12,7 @@ class AuthenticationController < ApplicationController
 
   def unauthenticate
     delete_token(current_user)
+    render json: { message: 'success'}, status: :success
   end
 
   private
@@ -22,7 +23,7 @@ class AuthenticationController < ApplicationController
     return token
   end
 
-  def delete_token
+  def delete_token(user)
     $redis.del(user.id.to_s)
   end
 
