@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include AuthenticationHelper
   protect_from_forgery with: :null_session
   before_action :authenticate_request!
 
@@ -6,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   protected
   def authenticate_request!
-    
+
     unless user_id_in_token?
       render json: { errors: ['Not Authenticated'] }, status: :unauthorized
       return

@@ -8,16 +8,23 @@ class UsersController < ApplicationController
     message = []
     if params[:new_email]
       current_user.email = params[:email]
-      message << 'Email updated'
+      if current_user.save
+        message << 'Email updated.Login Again'
+        delete_token(current_user)
+      end
     end
     if params[:new_password]
-      if params[:old_password] == user.password
+      if current_user.authenticate(params[:old_password])
         current_user.password = params[:new_password]
-        message << 'New Password updated'
+        if current_user.save
+          message << 'Password updated. Login Again'
+          delete_token(current_user)
+        end
       else
         message << 'Password Incorrect'
       end
     end
+    render json: { message: message }
   end
 
   private
