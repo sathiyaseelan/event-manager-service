@@ -141,3 +141,16 @@ test:
         read:
           mode: :primary
         max_pool_size: 1
+
+production:
+  clients:
+    default:
+      database: daytotable
+      hosts:
+        - ENV['MONGO_URL']
+      options:
+        read:
+          mode: :primary
+        max_pool_size: 1
+        user: ENV['MONGO_USER']
+        password: ENV['MONGO_PASSWORD']
