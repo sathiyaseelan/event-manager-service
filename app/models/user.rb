@@ -1,5 +1,6 @@
 class User
   include Mongoid::Document
+  include Mongoid::Timestamps
   include ActiveModel::SecurePassword
 
   field :email, type: String
@@ -13,5 +14,10 @@ class User
   has_secure_password
 
   has_many :bookings
-  has_many  :notes
+  has_many :notes
+  has_many :created_courses, class_name: "Course", inverse_of: :created_by
+  has_and_belongs_to_many :enrolled_courses, class_name: "Course", inverse_of: :enrolled_users
+  def is_super_user?
+    role == 'SU'
+  end
 end

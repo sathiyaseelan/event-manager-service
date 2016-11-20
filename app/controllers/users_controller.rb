@@ -4,6 +4,21 @@ class UsersController < ApplicationController
     render json: User.all
   end
 
+  def update_role
+    if current_user.is_super_user?
+      user_to_be_updated = User.find(params[:user_id])
+      user_to_be_updated.role = params[:new_role]
+      if user_to_be_updated.save
+        delete_token(user_to_be_updated)
+        render json: {message: "success"}, status: success
+      else
+        render json: {message: "failed"},status: 500
+      end
+    else
+      render json: {message: "Not authorized"}, status: :unauthorized
+    end
+  end
+
   def update
     message = []
     if params[:new_email]

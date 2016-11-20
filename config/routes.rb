@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   scope '/api' do
     scope '/v1' do
@@ -11,6 +13,8 @@ Rails.application.routes.draw do
       resources :courses
       resources :notes
       resources :activities
+      post 'categories/new'
+      get 'categories' => 'categories#index'
     end
   end
 end
