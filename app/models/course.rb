@@ -1,6 +1,8 @@
 class Course
+
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Helper::Pagination
 
   field :name, type: String
   field :price, type: Float
@@ -11,7 +13,6 @@ class Course
   field :contactPerson
   field :contactNumber
   field :contactEmail
-  field :amenities
   field :paymentType
   field :imageUrl
   field :parking, type: Array
@@ -26,4 +27,7 @@ class Course
   belongs_to :created_by, class_name: "User", inverse_of: :created_courses
 
   has_and_belongs_to_many :enrolled_users, class_name: "User" , inverse_of: :enrolled_courses
+
+  scope :popular, ->(limit = 10){ desc(:ratings).limit(limit)}
+
 end
