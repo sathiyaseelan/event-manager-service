@@ -25,6 +25,10 @@ class User
 
   has_and_belongs_to_many :enrolled_activities, class_name: "Activity", inverse_of: :enrolled_users
 
+  #has_many :access_requests, inverse_of: :created_by
+  has_many :approved_requests,class_name: "AccessRequest", inverse_of: :approved_by
+  has_many :rejected_requests,class_name: "AccessRequest", inverse_of: :rejected_by
+
   def is_super_user?
     role == 'SU'
   end

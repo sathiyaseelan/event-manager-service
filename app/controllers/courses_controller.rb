@@ -1,16 +1,18 @@
 class CoursesController < ApplicationController
 
+skip_before_action :authenticate_request!, only: [:show, :popular, :index]
+
   def show
     @course = Course.find(params[:id])
     if @course
-      render json: @course, status: :success
+      render json: {success: true, course: @course}, status: 200
     else
-      render json: {message: "can not find course"},status: 400
+      render json: {success: false, message: "can not find course"},status: 400
     end
   end
 
   def popular
-    render json: Course.popular(params[:limit] || 5)
+    render json: {success: true, courses: Course.popular(params[:limit] || 5) }
   end
 
   def new
@@ -18,38 +20,38 @@ class CoursesController < ApplicationController
     @course.created_by = current_user
     if @course.valid?
       if @course.save
-        render json: {message: :success},status: 200
+        render json: {success: true},status: 200
       else
-        render json: {message: :failed},status: 500
+        render json: {success: false},status: 500
       end
     else
-      render json: {message: :failed, reason: @course.errors.full_messages},status: 400
+      render json: {success: true, reason: @course.errors.full_messages},status: 400
     end
   end
 
-  def enrolled_courses
+  def enrolled
     user = User.find(params[:user_id])
     if user
       enrolled_courses = user.enrolled_courses
-      render json: enrolled_courses, status: :success
+      render json: {success: true, courses: enrolled_courses}, status: 200
     else
-      render json: {message: "User not found"}, status: 400
+      render json: {success: false, message: "User not found"}, status: 400
     end
   end
 
-  def created_courses
+  def created
     user = User.find(params[:user_id])
     if user
       created_courses = user.created_courses
-      render json: created_courses, status: :success
+      render json: {success: true, courses: created_courses}, status: 200
     else
-      render json: {message: "User not found"}, status: 400
+      render json: {success: false, message: "User not found"}, status: 400
     end
   end
 
   def index
     courses = Course.paginated_result(index_params)
-    render json: courses, status: 200
+    render json: {success: true,courses: courses}, status: 200
   end
 
   private

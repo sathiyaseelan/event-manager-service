@@ -10,16 +10,16 @@ class ApplicationController < ActionController::Base
   def authenticate_request!
 
     unless user_id_in_token?
-      render json: { errors: ['Not Authenticated'] }, status: :unauthorized
+      render json: {success: false, errors: ['Not Authenticated'] }, status: :unauthorized
       return
     end
     if logged_in?(auth_token["user_id"])
       @current_user = User.find(auth_token["user_id"])
     else
-      render json: { errors: ['Session invalid'] }, status: :unauthorized
+      render json: {success: false, errors: ['Session invalid'] }, status: :unauthorized
     end
   rescue JWT::VerificationError, JWT::DecodeError
-    render json: { errors: ['Not Authenticated'] }, status: :unauthorized
+    render json: {success: false, errors: ['Not Authenticated'] }, status: :unauthorized
   end
 
   private

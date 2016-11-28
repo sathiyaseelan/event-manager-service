@@ -1,16 +1,17 @@
 class ActivitiesController < ApplicationController
+  skip_before_action :authenticate_request!, only: [:show, :upcoming, :index]
 
   def show
     @activity = Activity.find(params[:id])
     if @activity
-      render json: @activity, status: :success
+      render json:{success: true, activity: @activity}, status: 200
     else
-      render json: {message: "can not find activity"},status: 400
+      render json: {success: false, message: "can not find activity"},status: 400
     end
   end
 
   def upcoming
-    render json: Activity.upcoming(params[:limit] || 5)
+    render json: {success: true, activities: Activity.upcoming(params[:limit] || 5) }
   end
 
   def new
@@ -18,40 +19,38 @@ class ActivitiesController < ApplicationController
     @activity.created_by = current_user
     if @activity.valid?
       if @activity.save
-        render json: {message: :success},status: 200
+        render json: {success: true,message: :success},status: 200
       else
-        render json: {message: :failed},status: 500
+        render json: {success: false,message: :failed},status: 500
       end
     else
-      render json: {message: :failed, reason: @activity.errors.full_messages},status: 400
+      render json: {success: false,message: :failed, reason: @activity.errors.full_messages},status: 400
     end
   end
 
-  def enrolled_activities
+  def enrolled
     user = User.find(params[:user_id])
     if user
       enrolled_activities = user.enrolled_activities
-      render json: enrolled_activities, status: :success
+      render json: {success: true, enrolled_activities: enrolled_activities}, status: 200
     else
-      render json: {message: "User not found"}, status: 400
+      render json: {success: false, message: "User not found"}, status: 400
     end
   end
 
-  def created_activities
+  def created
     user = User.find(params[:user_id])
-    respond_to do |format|
-      if user
-        created_activities = user.created_activities
-      format.json{  render json: created_activities, status: :success}
-      else
-    format.json{  render json: {message: "User not found"}, status: 400 }
-      end
+    if user
+      created_activities = user.created_activities
+      render json: {success: true,created_activities: created_activities}, status: 200
+    else
+      render json: {success: false, message: "User not found"}, status: 400
     end
   end
 
   def index
     activities = Activity.paginated_result(index_params)
-    render json: activities, status: 200
+    render json:{success: true, activities: activities}, status: 200
   end
 
 
