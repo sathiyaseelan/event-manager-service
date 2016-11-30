@@ -4,6 +4,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   before_action :authenticate_request!
 
+  # Temporary fix for allowing all domain
+  before_filter :set_cross_domain_headers
+
   attr_reader :current_user
 
   protected
@@ -40,5 +43,11 @@ class ApplicationController < ActionController::Base
 
   def user_id_in_token?
     http_token && auth_token && auth_token[:user_id].to_i
+  end
+
+
+  def set_cross_domain_headers
+    response.headers['Access-Control-Allow-Origin'] = "*"
+    response.headers['Access-Control-Allow-Methods'] = "GET, POST, PUT, DELETE, OPTIONS"
   end
 end
