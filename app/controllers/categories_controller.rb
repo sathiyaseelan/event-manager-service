@@ -1,4 +1,5 @@
 class CategoriesController < ApplicationController
+  skip_before_action :authenticate_request!, only: [:index]
   include CategoriesHelper
 
   def new

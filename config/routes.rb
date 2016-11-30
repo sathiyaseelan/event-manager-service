@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   scope '/api' do
     scope '/v1' do
-      # need to create signup email,f_name,l_name,password
+
 
       #public
       post 'login'=> 'authentication#authenticate'
@@ -51,6 +51,12 @@ Rails.application.routes.draw do
 
       get 'requests/access/admin' => 'accessrequests#admin_requests'
       get 'requests/access/super_user' => 'accessrequests#super_user_requests'
+
+
+      get 'messages/inbox'
+      get 'messages/outbox'
+      put 'messages/compose'
+      get 'messages/emails'
     end
 
   end

@@ -29,13 +29,16 @@ class User
   has_many :approved_requests,class_name: "AccessRequest", inverse_of: :approved_by
   has_many :rejected_requests,class_name: "AccessRequest", inverse_of: :rejected_by
 
+  has_many :outbox_messages, class_name: "Message", inverse_of: :created_by
+  has_many :inbox_messages, class_name: "Message", inverse_of: :to
+
   def is_super_user?
     role == 'SU'
   end
 
-  def all_emails
-
+  after_save do |user|
+    puts "User is saved #{user}"
+    SearchSuggestion.seed_update(user.email)
   end
-
 
 end
