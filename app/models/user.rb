@@ -14,7 +14,7 @@ class User
 
   has_secure_password
 
-  has_many :bookings
+  has_many :bookings, inverse_of: :created_by
   has_many :notes
 
   has_many :created_courses, class_name: "Course", inverse_of: :created_by

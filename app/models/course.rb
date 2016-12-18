@@ -26,6 +26,8 @@ class Course
 
   belongs_to :created_by, class_name: "User", inverse_of: :created_courses
 
+  has_many :bookings
+  
   has_and_belongs_to_many :enrolled_users, class_name: "User" , inverse_of: :enrolled_courses
 
   scope :popular, ->(limit = 10){ desc(:ratings).limit(limit)}

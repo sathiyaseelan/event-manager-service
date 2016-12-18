@@ -11,8 +11,8 @@ class Booking
   field :price, type: Float
   field :imageUrl, type: String
 
-  belongs_to :user #, dependent: :destroy
+  belongs_to :activity, inverse_of: :bookings
+  belongs_to :course, inverse_of: :bookings
 
-  has_one :activity, inverse_of: nil
-  has_one :course, inverse_of: nil
+  belongs_to :created_by, class_name: "User", inverse_of: :bookings
 end

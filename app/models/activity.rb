@@ -26,6 +26,8 @@ class Activity
 
   belongs_to :created_by, class_name: "User", inverse_of: :created_activities
 
+  has_many :bookings
+
   has_and_belongs_to_many :enrolled_users, class_name: "User" , inverse_of: :enrolled_activities
 
   scope :upcoming, ->(limit = 10){ where({:schedule.gte => Time.now}).asc(:schedule)}

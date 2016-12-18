@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       put 'change_password'=> 'users#update'
       put 'update_email'=> 'users#update'
       get 'users' => 'users#index'
-      resources :bookings
+      resources :bookings, only: [:index, :create, :show, :update]
 
       resources :notes
 
