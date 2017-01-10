@@ -57,6 +57,8 @@ Rails.application.routes.draw do
       get 'messages/outbox'
       put 'messages/compose'
       get 'messages/emails'
+
+      post 'schedules/new'
     end
 
   end
